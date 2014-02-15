@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+	<form action="/upload" method="post" enctype="multipart/form-data">
+		Browse Markdown
+		<input type="file" name="markdown_file" id="markdown_file" />
+		<input type="submit" value="upload">
+	</form>
+	<div>
+		<form enctype="multipart/form-data">
+			Browse Image
+			<input type="file" name="image_file" id="image_file" />
+		</form>
+		Image save path: <%= $octopress_source_dir + $images_dir + "/" %>
+		<input type="text" name="image_save_path" id="image_save_path" value="">
+	</div>
+
+	<textarea class="markdown-container">
+		<%= @markdown_content %>
+	</textarea>
+
+	<div class="html-container">
+		<%= @html_content %>
+	</div>	
+
+	<script src="/js/jquery.js"></script>
+	<script src="/js/main.js"></script>
+</body>
+</html>

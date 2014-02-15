@@ -1,0 +1,35 @@
+.markdown-container {
+    width: 48%;
+    height: 600px;
+    float: left;
+    background: #131212;
+    color: #FFF;
+}
+
+.html-container {
+    width: 50%;
+    height: 600px;
+    float: right;
+    overflow: auto;
+}
+
+#image_save_path {
+    width: 534px;
+}
+
+.center {
+    width: 500px;
+    margin: 0 auto;
+}
+
+#title {
+    width: 480px;
+    height: 30px;
+    font-size: 20px;
+}
+
+#btn-create-post{
+    width: 480px;
+    height: 32px;
+    margin-top: 6px;
+}
