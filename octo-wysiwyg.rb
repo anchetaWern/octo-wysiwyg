@@ -1,8 +1,7 @@
 require 'sinatra'
 require 'redcarpet'
-require 'base64'
-require 'data_uri'
 require 'stringex'
+require 'data_uri'
 
 load 'config.rb'
 
