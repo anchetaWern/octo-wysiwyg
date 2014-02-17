@@ -61,9 +61,20 @@ http://localhost:9393/new
 Images can be added by clicking on the 'browse image' button. It will be automatically copied to the octopress image directory that you supplied on the `config.rb` file and to the octo-wysiwyg image directory so the image can be viewed from the HTML preview. It will also append the corresponding markdown text to link the image.
 
 
+###Keyboard Shortcuts
+
+- `ctrl + s` - save post
+- `ctrl + 1` to `ctrl + 6` - headings 1 to 6
+- `f1` - code block
+- `f2` - read more link
+- `ctrl + b` - bold
+- `ctrl + i` - italic
+- `ctrl + q` - blockquote
+- `ctrl + g` - image
+
 ###TODO
 
-- more keyboard shortcuts (creating headings, adding tags)
+- keyboard shortcuts for common plugins (image tag, video tags, and other plugins from [here](https://github.com/imathis/octopress/tree/master/plugins))
 - line numbers for markdown
 - auto-scroll - the HTML preview should auto-scroll when scrolling the markdown
 - syntax highlighting for code displayed in the HTML preview
