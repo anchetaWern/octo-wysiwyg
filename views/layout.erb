@@ -2,10 +2,18 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Jet</title>
+	<title>octo-wysiwyg</title>
+	<link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="/google-code-prettify/src/prettify.css">
 	<link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-	<%= yield %>
+	<div class="container-fluid">
+		<%= yield %>
+	</div>
+	<script src="/jquery/jquery.js"></script>
+	<script src="/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="/google-code-prettify/src/prettify.js"></script>
+	<script src="/js/main.js"></script>
 </body>
 </html>

@@ -14,7 +14,8 @@ def blockquote(html)
 end
 
 def render_markdown(text)
-	markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :fenced_code_blocks => true)
+	rnder = Redcarpet::Render::HTML.new(:prettify => true)
+	markdown = Redcarpet::Markdown.new(rnder, :autolink => true, :fenced_code_blocks => true)
 	html = markdown.render(text)
 
 	@old_paths = html.scan(/src="((?:\w|\.|\/|_|-)+)"/)
@@ -53,12 +54,15 @@ end
 
 
 get '/' do
+	@has_content = false
 	if !session['current_file'].nil? && !session['current_file'].empty?
-		current_file = 'uploads/' + session['current_file']
+		@current_file = 'uploads/' + session['current_file']
 		@content = ''
 		@text = ''
-		if File.exist?(current_file)
-			File.readlines(current_file).each do |line|
+		if File.exist?(@current_file)
+			@has_content = true
+			@image_save_path = session['current_file'].gsub('.markdown', '');
+			File.readlines(@current_file).each do |line|
 				@text += line
 			end
 
@@ -95,15 +99,14 @@ post "/save_image" do
 		FileUtils.cp(filename, dest_file) 
 	end	
 	dest_path
-
-	"![]" + "(" + image_path  + ")"
+	image_path
 end
 
 
 post "/save_post" do
-	current_file = 'uploads/' + session['current_file']
-	File.open(current_file, 'w') { |file| file.write(params[:markdown]) }
-	FileUtils.copy(current_file,  $posts_dir + '/' + session['current_file'])
+	@current_file = 'uploads/' + session['current_file']
+	File.open(@current_file, 'w') { |file| file.write(params[:markdown]) }
+	FileUtils.copy(@current_file,  $posts_dir + '/' + session['current_file'])
 end
 
 post "/update_html" do
