@@ -1,3 +1,15 @@
+var initial_text = $('.markdown-container').val();
+var publish_regex = /published:\s(true|false)/;
+var comments_regex = /comments: (true|false)/;
+
+var publish_matches = initial_text.match(publish_regex);
+var comments_matches = initial_text.match(comments_regex);
+
+var title_regex = /title:\s("?.+")/;
+var current_text = $('.markdown-container').val();
+var title = current_text.match(title_regex);
+var keyup_timeout;
+
 function setSelectionRange(input, selectionStart, selectionEnd){
 	if(input.setSelectionRange){
 		input.focus();
@@ -35,18 +47,67 @@ function getCaret(node){
   return len;
 }
 
+function update_html(){
+	var markdown = $('.markdown-container').val();
+	$.post('/update_html', {'markdown' : markdown}, function(response){
+		$('.html-container').html(response);
+		update_checkbox();
+		prettyPrint();
+	});
+}
+
+function update_checkbox(){
+	var current_text = $('.markdown-container').val();
+	var publish_matches = current_text.match(publish_regex);
+	var comments_matches = current_text.match(comments_regex);
+
+	var bool_r = [true, false];
+	if(publish_matches){
+		$('#publish').prop({'checked' : bool_r[publish_matches[1].length - 4]});
+	}
+
+	if(comments_matches){
+		$('#comments').prop({'checked' : bool_r[comments_matches[1].length - 4]});
+	}
+}
+
 $('.markdown-container').val($.trim($('.markdown-container').val()));
 
 $('.markdown-container').keyup(function(){
-	var markdown = $(this).val();
-	$.post('/update_html', {'markdown' : markdown}, function(response){
-		$('.html-container').html(response);
-	});
+	clearTimeout(keyup_timeout);
+    keyup_timeout = setTimeout('update_html()', 1500);
+});
+
+$('#publish').prop({'checked' : publish_matches[1]});
+$('#comments').prop({'checked' : comments_matches[1]});
+
+$('#post-title').val(title[1]);
+
+prettyPrint();
+
+$('#post-title').keyup(function(){
+	var title = $(this).val();
+	var current_text = $('.markdown-container').val();
+	var new_text = current_text.replace(title_regex, 'title: ' + title);
+	$('.markdown-container').val(new_text);
+});
+
+$('#publish').click(function(){
+	var publish = $(this).is(':checked');
+	var current_text = $('.markdown-container').val();
+	var new_text = current_text.replace(publish_regex, 'published: ' + publish);
+	$('.markdown-container').val(new_text);
+});
+
+$('#comments').click(function(){
+	var comments = $(this).is(':checked');
+	var current_text = $('.markdown-container').val();
+	var new_text = current_text.replace(comments_regex, 'comments: ' + comments);
+	$('.markdown-container').val(new_text);
 });
 
 $(document).bind('keydown', function(e){
 	var markdown = $('.markdown-container').val();
-	var current_text = $.trim($('.markdown-container').val());
 	var markdown_container = document.getElementsByClassName('markdown-container')[0];
 
 	var cursor_position = getCaret(markdown_container);
@@ -135,6 +196,13 @@ $(document).bind('keydown', function(e){
 		return false;
 	}
 
+	//upload modal
+	if(e.ctrlKey && e.which == 85){
+		e.preventDefault();
+		$('#image-upload-modal').modal('show');
+		return false;
+	}
+
 });
 
 
@@ -144,6 +212,13 @@ var reader = new FileReader();
 var image_file = document.getElementById('image_file');
 
 $('#image_file').change(function(){
+	var markdown_container = document.getElementsByClassName('markdown-container')[0];
+	var markdown = $('.markdown-container').val();
+
+	var cursor_position = getCaret(markdown_container);
+	var first_part = markdown.slice(0, cursor_position);
+	var second_part = markdown.slice(cursor_position, -1);
+
 	var image_save_path = $('#image_save_path').val();
 	var file = image_file.files[0];
 	var filename = file.name;
@@ -152,11 +227,20 @@ $('#image_file').change(function(){
 			'/save_image',
 			{'image_save_path' : image_save_path, 'data_uri' : reader.result, 'filename' : filename},
 			function(response){
-				var current_text = $.trim($('.markdown-container').val());
-				$('.markdown-container').val(current_text + $.trim(response));
+				$('.markdown-container').val(first_part + "![](" + response + ")" + second_part);
+				setCaretToPos(markdown_container, cursor_position + 2);
+				$('#image-upload-modal').modal('hide');
+				
+				clearTimeout(keyup_timeout);
+				keyup_timeout = setTimeout('update_html()', 1500);
 		});
 	};
 
 	reader.readAsDataURL(file);
+});
+
+$('.markdown-container').scroll(function(){
+	var scroll_position = $('.markdown-container').scrollTop();
+	$('.html-container').scrollTop(scroll_position);
 });
 
