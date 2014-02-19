@@ -52,26 +52,48 @@ def render_markdown(text)
 	content_r
 end
 
-
 get '/' do
 	@has_content = false
-	if !session['current_file'].nil? && !session['current_file'].empty?
-		@current_file = 'uploads/' + session['current_file']
-		@content = ''
-		@text = ''
-		if File.exist?(@current_file)
-			@has_content = true
-			@image_save_path = session['current_file'].gsub('.markdown', '');
-			File.readlines(@current_file).each do |line|
-				@text += line
-			end
+	erb :jet
+end
 
-			content_r = render_markdown(@text)
-			@html_content = content_r['html']
-			@markdown_content = content_r['markdown']
+get '/edit/:post' do
+	@has_content = false
+	
+	if !params[:post].nil?
+	
+		#delete previously upload files
+		Dir.foreach('uploads/') do |item|
+			next if item == '.' or item == '..'
+			File.delete('uploads/' + item)
+		end
+
+		source_file = $posts_dir + '/' + params[:post]
+		dest_file = $root_dir + '/uploads/' + params[:post]
+		if !File.exist?(dest_file)
+			FileUtils.cp(source_file, dest_file)
+			session['current_file'] = params[:post]
+		end
+		
+
+		if !session['current_file'].nil? && !session['current_file'].empty?
+			@current_file = 'uploads/' + session['current_file']
+			@content = ''
+			@text = ''
+			if File.exist?(@current_file)
+				@has_content = true
+				@image_save_path = session['current_file'].gsub('.markdown', '');
+				File.readlines(@current_file).each do |line|
+					@text += line
+				end
+
+				content_r = render_markdown(@text)
+				@html_content = content_r['html']
+				@markdown_content = content_r['markdown']
+			end
 		end
 	end
-	erb :jet	
+	erb :jet
 end
 
 
@@ -115,18 +137,29 @@ post "/update_html" do
 end
 
 post "/upload" do 
-   #delete previously upload files
-   Dir.foreach('uploads/') do |item|
-	next if item == '.' or item == '..'
-	File.delete('uploads/' + item)
-  end
+	if !params['markdown_file'].nil?
+		
+		filename = params['markdown_file'][:filename]
+		is_markdown = filename[/\.markdown/]
+		if is_markdown != nil
 
-  #upload the new markdown file
-  File.open('uploads/' + params['markdown_file'][:filename], "w") do |f|
-    f.write(params['markdown_file'][:tempfile].read)
-  	session['current_file'] = params['markdown_file'][:filename]
-  end
-  redirect '/'
+			#delete previously upload files
+			Dir.foreach('uploads/') do |item|
+				next if item == '.' or item == '..'
+				File.delete('uploads/' + item)
+			end
+
+			#upload the new markdown file
+			File.open('uploads/' + filename, "w") do |f|
+				f.write(params['markdown_file'][:tempfile].read)
+				session['current_file'] = filename
+			end
+
+			redirect '/edit/' + filename
+		else
+			"Please upload a .markdown file"
+		end
+	end
 end
 
 
@@ -161,5 +194,43 @@ post '/new' do
 		session['current_file'] = filename
 	end	
 
-	redirect '/'
+	redirect '/edit/' + filename 
+end
+
+get '/list' do
+	@posts = []
+	Dir.foreach($posts_dir) do |item|
+		title = ''
+		date = ''
+		if item != '.' && item != '..'
+			counter = 0
+			current_file = $posts_dir + '/' + item
+			File.readlines(current_file).each do |line|
+				if counter == 2
+					title += line.strip[8..-2]
+				end
+				if counter == 3
+					date += line.strip[6..-7]
+					break
+				end
+				counter += 1
+			end
+
+			@posts.push({:title => title, :date => date, :path => item})
+		end
+	end
+	@posts = @posts.sort_by{|p| p[:date] }.reverse
+	
+	@posts
+	erb :list_posts
+end
+
+
+get '/filetype' do
+	str = "super-duper.mardkdown"
+	is_markdown = str[/\.markdown/]
+	if is_markdown != nil
+		'yes'
+	end
+
 end

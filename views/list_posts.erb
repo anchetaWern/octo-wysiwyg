@@ -1,0 +1,9 @@
+<div class="center">
+	<h2>Posts</h2>
+	<% @posts.each do |post| %>
+		<li>
+			<%= post[:date] %>
+			<a href="/edit/<%= post[:path] %>"><%= post[:title] %></a>
+		</li>
+	<% end %>	
+</div>

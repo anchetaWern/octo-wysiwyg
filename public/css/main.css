@@ -1,4 +1,4 @@
-#markdown-uploader-container{
+#markdown-uploader-container {
     margin: 5px 0 5px 0;
 }
 
@@ -32,8 +32,12 @@
     font-size: 15px;
 }
 
-#btn-create-post{
+#btn-create-post {
     width: 480px;
     height: 32px;
     margin-top: 6px;
+}
+
+.form-inline {
+    display: inline;
 }
