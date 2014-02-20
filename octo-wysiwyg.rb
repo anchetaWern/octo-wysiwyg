@@ -224,13 +224,3 @@ get '/list' do
 	@posts
 	erb :list_posts
 end
-
-
-get '/filetype' do
-	str = "super-duper.mardkdown"
-	is_markdown = str[/\.markdown/]
-	if is_markdown != nil
-		'yes'
-	end
-
-end
