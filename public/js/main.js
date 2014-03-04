@@ -77,6 +77,89 @@ function updateCheckbox(){
 }
 
 
+function getCurrentValues(){
+	var markdown = $('.markdown-container').val();
+	var markdown_container = document.getElementsByClassName('markdown-container')[0];
+
+	var cursor_position = getCaret(markdown_container);
+	var first_part = markdown.slice(0, cursor_position);
+	var second_part = markdown.slice(cursor_position, -1);	
+
+	var current_values = {
+		'markdown' : markdown,
+		'markdown_container' : markdown_container,
+		'first_part' : first_part,
+		'second_part' : second_part,
+		'cursor_position' : cursor_position
+	};
+
+	return current_values;
+}
+
+function bold(){			
+	var current_values = getCurrentValues();
+	
+	var bold_value = current_values.first_part + "****" + current_values.second_part;
+	$('.markdown-container').val(bold_value);
+	setCaretToPos(current_values.markdown_container, current_values.cursor_position + 2);
+}
+
+function italic(){
+	var current_values = getCurrentValues();
+
+	var italic_value = current_values.first_part + "**" + current_values.second_part;
+	$('.markdown-container').val(italic_value);
+	setCaretToPos(current_values.markdown_container, current_values.cursor_position + 1);
+}
+
+function quote(){
+	var current_values = getCurrentValues();
+
+	$('.markdown-container').val(current_values.first_part + "\n{% blockquote %}\n\n{% endblockquote %}" + current_values.second_part);
+	setCaretToPos(current_values.markdown_container, current_values.cursor_position + 18);
+}
+
+function link(){
+	var current_values = getCurrentValues();
+	var link_value = current_values.first_part + "[]()" + current_values.second_part;
+	$('.markdown-container').val(link_value);
+	setCaretToPos(current_values.markdown_container, current_values.cursor_position + 1);
+}
+
+function code(){
+	var current_values = getCurrentValues();
+	$('.markdown-container').val(current_values.first_part + "``" + current_values.second_part);
+	setCaretToPos(current_values.markdown_container, current_values.cursor_position + 1);	
+}
+
+function multilineCode(){
+	var current_values = getCurrentValues();
+	$('.markdown-container').val(current_values.first_part + "\n```\n```" + current_values.second_part);
+	setCaretToPos(current_values.markdown_container, current_values.cursor_position + 4);
+}
+
+function image(){
+	var current_values = getCurrentValues();
+	var image_value = current_values.first_part + " ![]()" + current_values.second_part;
+	if(current_values.markdown_container.value.slice(-1) == "\n"){
+		image_value = current_values.first_part + "\n![]()" + current_values.second_part;
+	}
+
+	$('.markdown-container').val(image_value);
+	setCaretToPos(current_values.markdown_container, current_values.cursor_position + 5);	
+}
+
+function save(){
+	var current_values = getCurrentValues();
+	$.post('/save_post', {'markdown' : current_values.markdown});
+}
+
+function heading(key){
+	var current_values = getCurrentValues();
+	$('.markdown-container').val(current_values.first_part + "\n" + key + current_values.second_part);
+	setCaretToPos(current_values.markdown_container, current_values.cursor_position + key.length + 1);	
+}
+
 $(function(){
 	prettyPrint();
 	updateCheckbox();
@@ -141,17 +224,19 @@ $(function(){
 	});
 
 	$(document).bind('keydown', function(e){
+		/*
 		var markdown = $('.markdown-container').val();
 		var markdown_container = document.getElementsByClassName('markdown-container')[0];
 
 		var cursor_position = getCaret(markdown_container);
 		var first_part = markdown.slice(0, cursor_position);
 		var second_part = markdown.slice(cursor_position, -1);
-
-		//save post
+		*/
+		
+		//save post (s)
 		if(e.ctrlKey && (e.which == 83)){
 			e.preventDefault();
-			$.post('/save_post', {'markdown' : markdown});
+			save();
 			return false;
 		}
 
@@ -159,62 +244,40 @@ $(function(){
 		var keys = {'49' : '#', '50' : '##', '51' : '###', '52' : '####', '53' : '#####', '54' : '######'};
 		if(e.ctrlKey && (e.which >= 49 && e.which <= 54)){
 			e.preventDefault();
-			$('.markdown-container').val(first_part + "\n" + keys[e.which] + second_part);
-			setCaretToPos(markdown_container, cursor_position + keys[e.which].length + 1);
+			var key = keys[e.which];
+			heading(key);
 			return false;
 		}
 
-		//insert image
+		//insert image (g)
 		if(e.ctrlKey && e.which == 71){
 			e.preventDefault();
-
-			var image_value = first_part + " ![]()" + second_part;
-			if(markdown_container.value.slice(-1) == "\n"){
-				image_value = first_part + "\n![]()" + second_part;
-			}
-
-			$('.markdown-container').val(image_value);
-			setCaretToPos(markdown_container, cursor_position + 5);
+			image();
 			return false;
 		}
 
-		//bold
+		//bold (b)
 		if(e.ctrlKey && e.which == 66){
 			e.preventDefault();
-
-			var bold_value = first_part + " ****" + second_part;
-			if(markdown_container.value.slice(-1) == "\n"){
-				bold_value = first_part + "\n****" + second_part;
-			}
-
-			$('.markdown-container').val(bold_value);
-			setCaretToPos(markdown_container, cursor_position + 3);
+			bold();
 			return false;
 		}
 
-		//italic
+		//italic (i)
 		if(e.ctrlKey && e.which == 73){
 			e.preventDefault();
-
-			var italic_value = first_part + " **" + second_part;
-				if(markdown_container.value.slice(-1) == "\n"){
-				italic_value = first_part + "\n**" + second_part;
-			}
-
-			$('.markdown-container').val(italic_value);
-			setCaretToPos(markdown_container, cursor_position + 2);
+			italic();
 			return false;
 		}
 
-		//blockquote
+		//blockquote (q)
 		if(e.ctrlKey && e.which == 81){
 			e.preventDefault();
-			$('.markdown-container').val(first_part + "\n{% blockquote %}\n\n{% endblockquote %}" + second_part);
-			setCaretToPos(markdown_container, cursor_position + 18);
+			quote();
 			return false;
 		}
 
-		//more
+		//more (f2)
 		if(e.which == 113){
 			e.preventDefault();
 			$('.markdown-container').val(first_part + "\n<!--more-->\n" + second_part);
@@ -222,11 +285,24 @@ $(function(){
 			return false;
 		}
 
-		//multi-line code
+		//link (-)
+		if(e.ctrlKey && e.which == 189){
+			e.preventDefault();
+			link();
+			return false;
+		}
+
+		//code (/)
+		if(e.ctrlKey && e.which == 220){
+			e.preventDefault();
+			code();
+			return false;
+		}
+
+		//multi-line code (f1)
 		if(e.which == 112){
 			e.preventDefault();
-			$('.markdown-container').val(first_part + "\n```\n```" + second_part);
-			setCaretToPos(markdown_container, cursor_position + 4);
+			multilineCode();
 			return false;
 		}
 
@@ -270,6 +346,50 @@ $(function(){
 	$('.markdown-container').scroll(function(){
 		var scroll_position = $('.markdown-container').scrollTop();
 		$('.html-container').scrollTop(scroll_position);
+	});
+
+	$('#bold').click(function(){
+		bold();
+	});
+
+	$('#btn-save').click(function(){
+		save();
+	});
+
+	$('#btn-italic').click(function(){
+		italic();
+	});
+
+	$('#btn-link').click(function(){
+		link();
+	});
+
+	$('#btn-quote').click(function(){
+		quote();
+	});
+
+	$('#btn-picture').click(function(){
+		$('#image-upload-modal').modal('show');
+	});
+
+	$('#btn-ol-list').click(function(){
+		orderedList();
+	});
+
+	$('#btn-ul-list').click(function(){
+		unorderedList();
+	});
+
+	$('#btn-multilinecode').click(function(){
+		multilineCode();
+	});
+
+	$('#btn-new').click(function(){
+		window.location.href = '/new';
+	});
+
+	$('#btn-list').click(function(){
+		window.location.href = '/list';
 	});
 });
 

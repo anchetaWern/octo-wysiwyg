@@ -1,16 +1,28 @@
+body {
+    background: #EEE;
+}
+
 #markdown-uploader-container {
     margin: 5px 0 5px 0;
 }
 
 #post-title {
-    width: 444px;
+    width: 595px;
+}
+
+#upload-form {
+    margin-left: 25px;
+}
+
+#checkboxes {
+    margin-left: 10px;
 }
 
 .markdown-container {
     width: 48%;
     height: 600px;
     float: left;
-    background: #131212;
+    background: #323232;
     color: #FFF;
 }
 
@@ -19,6 +31,8 @@
     height: 600px;
     float: right;
     overflow: auto;
+    background: #FFF;
+    padding: 5px;
 }
 
 .center {
@@ -40,4 +54,12 @@
 
 .form-inline {
     display: inline;
+}
+
+#new-link {
+    margin-left: 10px;
+}
+
+#action-buttons {
+    margin-top: 5px;
 }
