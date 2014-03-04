@@ -72,6 +72,8 @@ Images can be added by clicking on the 'browse image' button. It will be automat
 - `ctrl + s` - save post
 - `ctrl + 1` to `ctrl + 6` - headings 1 to 6
 - `f1` - code block
+- `/` - code
+- `-` - link
 - `f2` - read more link
 - `ctrl + b` - bold
 - `ctrl + i` - italic
@@ -82,8 +84,3 @@ Images can be added by clicking on the 'browse image' button. It will be automat
 ###Screenshot
 
 ![octo-wysiwyg](/img/m2html.png)
-
-###TODO
-
-- keyboard shortcuts for common plugins (image tag, video tags, and other plugins from [here](https://github.com/imathis/octopress/tree/master/plugins))
-- line numbers for markdown
