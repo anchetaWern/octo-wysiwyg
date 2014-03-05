@@ -63,3 +63,7 @@ body {
 #action-buttons {
     margin-top: 5px;
 }
+
+#link-modal .modal-body{
+    overflow: auto;
+}
