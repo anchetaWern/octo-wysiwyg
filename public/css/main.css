@@ -67,3 +67,7 @@ body {
 #link-modal .modal-body{
     overflow: auto;
 }
+
+#notifications {
+    margin-left: 35px;
+}

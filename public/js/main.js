@@ -193,6 +193,10 @@ function unorderedList(){
 	setCaretToPos(current_values.markdown_container, current_values.cursor_position + 3);
 }
 
+function notify(text, type){
+	$('#notification_text').show().text(text).removeClass().addClass('label ' + ' label-' + type).fadeOut(3600);
+}
+
 
 $(function(){
 	prettyPrint();
@@ -227,6 +231,7 @@ $(function(){
 		var current_text = $('.markdown-container').val();
 		var new_text = current_text.replace(publish_regex, 'published: ' + publish);
 		$('.markdown-container').val(new_text);
+		notify('Set publish to ' + publish, 'success');
 	});
 
 	$('#comments').click(function(){
@@ -234,6 +239,7 @@ $(function(){
 		var current_text = $('.markdown-container').val();
 		var new_text = current_text.replace(comments_regex, 'comments: ' + comments);
 		$('.markdown-container').val(new_text);
+		notify('Set comments to ' + comments, 'success');
 	});
 
 	$('#update').click(function(){
@@ -256,6 +262,7 @@ $(function(){
 				new_text = current_text.replace(publish_matches[0], publish_matches[0] + "\n" + 'updated: ' + date);
 			}
 			$('.markdown-container').val(new_text);
+			notify('Set update date to ' + date, 'success');
 		}
 	});
 
@@ -367,6 +374,7 @@ $(function(){
 		if(e.ctrlKey && e.which == 82){
 			e.preventDefault();
 			ol_counter(true);
+			notify('Ordered list counter has been reset to 1!', 'success');
 			return false;
 		}
 
@@ -413,6 +421,7 @@ $(function(){
 
 	$('#btn-save').click(function(){
 		save();
+		notify('Saved!', 'success');
 	});
 
 	$('#btn-italic').click(function(){
@@ -469,6 +478,7 @@ $(function(){
 
 	$('#btn-reset-counter').click(function(){
 		ol_counter(true);
+		notify('Ordered list counter has been reset to 1!', 'success');
 	});
 });
 
