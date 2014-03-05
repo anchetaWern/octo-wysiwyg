@@ -64,10 +64,14 @@ body {
     margin-top: 5px;
 }
 
-#link-modal .modal-body{
+#link-modal .modal-body, #confirmation-modal .modal-body {
     overflow: auto;
 }
 
 #notifications {
     margin-left: 35px;
+}
+
+#btn-yes {
+    margin-left: 5px;
 }

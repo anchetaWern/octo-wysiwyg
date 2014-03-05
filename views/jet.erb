@@ -15,11 +15,11 @@
 		<input type="submit" id="upload" class="btn btn-success" value="upload" />
 	</form>
 	
-	<button type="button" id="btn-new" class="btn btn-default">
+	<button type="button" id="btn-new" data-action="new" class="btn btn-default">
 		<span class="fa fa-file-o"></span>
 	</button>
 	
-	<button type="button" id="btn-list" class="btn btn-default">
+	<button type="button" id="btn-list" data-action="list" class="btn btn-default">
 		<span class="fa fa-th-list"></span>
 	</button>
 
@@ -131,6 +131,27 @@
 			</div>
 			<div class="form-group">
 				<button type="button" id="btn-insertlink" class="btn btn-primary pull-right">Insert Link</button>
+			</div>
+		</form>	     	
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div id="confirmation-modal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Confirm Action</h4>
+      </div>
+      <div class="modal-body">
+      	<h5>Do you want to save your changes before leaving the page?</h5>
+		<form role="form">
+			<div class="form-group">
+				<button type="button" id="btn-yes" class="btn btn-success pull-right">Yes</button>
+				<button type="button" id="btn-no" class="btn btn-danger pull-right">No</button>
 			</div>
 		</form>	     	
       </div>

@@ -456,12 +456,18 @@ $(function(){
 		multilineCode();
 	});
 
-	$('#btn-new').click(function(){
-		window.location.href = '/new';
+	$('#btn-new, #btn-list').click(function(){
+		$('#confirmation-modal').modal('show');
+		$('#btn-yes, #btn-no').data('action', $(this).data('action'));
 	});
 
-	$('#btn-list').click(function(){
-		window.location.href = '/list';
+	$('#btn-yes').click(function(){
+		save();
+		window.location.href = '/' + $(this).data('action');
+	});
+
+	$('#btn-no').click(function(){
+		window.location.href = '/' + $(this).data('action');
 	});
 
 	$('#link_text').keydown(function(e){
