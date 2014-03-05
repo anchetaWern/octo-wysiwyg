@@ -463,6 +463,10 @@ $(function(){
 		}
 	});
 
+	$('#link-modal').on('shown.bs.modal', function(){
+		$('#link_url').focus();
+	});	
+
 	$('#btn-reset-counter').click(function(){
 		ol_counter(true);
 	});
