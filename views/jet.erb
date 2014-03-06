@@ -23,6 +23,18 @@
 		<span class="fa fa-th-list"></span>
 	</button>
 
+	<button type="button" id="btn-push" data-action="list" class="btn btn-default">
+		<span class="fa fa-check"></span>
+	</button>
+
+	<button type="button" id="btn-help" data-action="list" class="btn btn-default">
+		<span class="fa fa-question"></span>
+	</button>
+
+	<button type="button" id="btn-settings" data-action="list" class="btn btn-default">
+		<span class="fa fa-cog"></span>
+	</button>
+
 	<div id="action-buttons" class="btn-group">
 		<button type="button" id="btn-save" class="btn btn-default">
 			<span class="glyphicon glyphicon-floppy-save"></span>
@@ -88,8 +100,30 @@
 	<%= @html_content %>
 </div>
 
-<div id="image-upload-modal" class="modal fade">
+<div id="main-settings-modal" class="modal fade">
   <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Settings</h4>
+      </div>
+      <div class="modal-body">
+		 <form role="form"> 				 		 	
+			<div class="form-group">
+				<label for="image_save_path">Current image save path</label>
+				<%= $octopress_source_dir + $images_dir + "/" %>
+				<input type="text" name="image_save_path" class="form-control" id="image_save_path" value="<%= @image_save_path %>" />
+			</div>
+		</form>		     	
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<div id="image-upload-modal" class="modal fade">
+  <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -97,15 +131,13 @@
       </div>
       <div class="modal-body">
 		 <form enctype="multipart/form-data" role="form">
-			<div class="form-group">
-				<label for="image_save_path">Image save path</label>
-				<%= $octopress_source_dir + $images_dir + "/" %>
-				<input type="text" name="image_save_path" class="form-control" id="image_save_path" value="<%= @image_save_path %>" />
-			</div>
 		 	<div class="form-group">
 				<label for="image_file">Browse Image</label>
 				<input type="file" name="image_file" id="image_file" class="form-control" />
 		 	</div>
+			<div class="form-group">
+				<button type="button" id="btn-insertimage" class="btn btn-primary pull-right">Insert Image</button>
+			</div> 			 				 		 	
 		</form>		     	
       </div>
     </div><!-- /.modal-content -->
@@ -158,5 +190,72 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div id="help-modal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Help</h4>
+      </div>
+      <div class="modal-body">
+      	<h5>Keyboard Shortcuts</h5>
+		<div class="row">
+			<div class="col-md-8">
+				<code>ctrl + h</code> - help
+			</div>
+			<div class="col-md-8">
+				<code>ctrl + s</code> - save
+			</div>
+			<div class="col-md-8">
+				<code>ctrl + 1</code> to <code>ctrl + 6</code> - h1 to h6
+			</div>
+			<div class="col-md-8">
+				<code>f1</code> - code block
+			</div>
+			<div class="col-md-8">
+				<code>f2</code> - read more link
+			</div>	
+			<div class="col-md-8">
+				<code>-</code> - link
+			</div>
+			<div class="col-md-8">
+				<code>/</code> - code
+			</div>
+			<div class="col-md-8">
+				<code>ctrl + b</code> - bold
+			</div>
+			<div class="col-md-8">
+				<code>ctrl + i</code> - italic
+			</div>
+			<div class="col-md-8">
+				<code>ctrl + q</code> - blockquote
+			</div>
+			<div class="col-md-8">
+				<code>ctrl + g</code> - insert image
+			</div>
+			<div class="col-md-8">
+				<code>ctrl + u</code> - upload image
+			</div>
+			<div class="col-md-8">
+				<code>ctrl + p</code> - main settings
+			</div>
+			<div class="col-md-8">
+				<code>ctrl + 8</code> - git
+			</div>
+			<div class="col-md-8">
+				<code>ctrl + r</code> - reset counter
+			</div>
+			<div class="col-md-8">
+				<code>ctrl + k</code> - unordered list
+			</div>
+			<div class="col-md-8">
+				<code>ctrl + l</code> - ordered list
+			</div>
+		</div>    	
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->	
+</div>
 
 <% end %>

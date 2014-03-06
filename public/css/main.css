@@ -7,7 +7,7 @@ body {
 }
 
 #post-title {
-    width: 595px;
+    width: 580px;
 }
 
 #upload-form {
@@ -64,7 +64,7 @@ body {
     margin-top: 5px;
 }
 
-#link-modal .modal-body, #confirmation-modal .modal-body {
+#link-modal .modal-body, #confirmation-modal .modal-body, #image-upload-modal .modal-body {
     overflow: auto;
 }
 
@@ -74,4 +74,8 @@ body {
 
 #btn-yes {
     margin-left: 5px;
+}
+
+#markdown_file {
+    width: 260px;
 }
