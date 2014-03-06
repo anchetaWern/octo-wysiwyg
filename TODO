@@ -1,7 +1,4 @@
 TODO
-
   - integration with official plugins and some 3rd party ones (jsfiddle, jsbin, and codepen.io)
   - add import and export feature (for online version)
   - line numbers
-  - emmet-like syntax
-  - git integration - when updating posts add ability to commit changes to the file and files associated with a specific post. 

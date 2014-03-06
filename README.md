@@ -67,6 +67,16 @@ http://localhost:9393/new
 Images can be added by clicking on the 'browse image' button. It will be automatically copied to the octopress image directory that you supplied on the `config.rb` file and to the octo-wysiwyg image directory so the image can be viewed from the HTML preview. It will also append the corresponding markdown text to link the image.
 
 
+###Version Control
+
+To easily manage updates in blog posts a version control feature is also available. It can be accessed by going to `http://localhost:9393/git`. This allows adding of files into the staging area and automatically commiting them.
+
+
+###What this app is not
+
+This app isn't meant to replace octopress, its just a UI that sits on top of octopress to make common writing tasks easier. Things like creating a new post, editing it and managing updates. You would still need to execute `rake gen_deploy` from the command line if you want to publish your blog or `git diff` if you want to know what has changed in your blog posts. 
+
+
 ###Keyboard Shortcuts
 
 - `ctrl + s` - save post
@@ -78,8 +88,13 @@ Images can be added by clicking on the 'browse image' button. It will be automat
 - `ctrl + b` - bold
 - `ctrl + i` - italic
 - `ctrl + q` - blockquote
-- `ctrl + g` - insert markdown image tag
 - `ctrl + u` - upload image - this will prompt you to upload an image, the uploaded image will be automatically added on the current document and the uploaded image will be copied over to the octopress image directory that you selected
+
+- `ctrl + p` - main settings
+- `ctrl + r` - reset counter
+- `ctrl + k` - unordered list
+- `ctrl + l` - ordered list
+
 
 ###Screenshot
 
