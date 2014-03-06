@@ -1,0 +1,48 @@
+<div class="center" id="untracked-files">
+	<h2>Version Control</h2>
+
+	<div class="row">
+		<form class="form-inline">
+			commit message
+			<input type="text" id="commit-message" class="form-control">
+			<button type="button" id="btn-commit" class="btn btn-success">Commit Files</button>
+			<span id="notifications">
+				<span id="notification_text"></span>
+			</span>
+		</form>		
+	</div>
+
+	<div class="row" id="file-tab">
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs">
+		  <li class="active"><a href="#untracked" data-toggle="tab">Untracked</a></li>
+		  <li><a href="#modified" data-toggle="tab">Modified</a></li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+		  <div class="tab-pane active" id="untracked">
+			<li>
+				<input type="checkbox" id="select-all-untracked"> select all			
+			</li>
+			<% @untracked_files.each do |file| %>
+				<li>
+					<input type="checkbox" class="untracked_file" value="<%= file %>">
+					<%= file %>
+				</li>
+			<% end %>	
+		  </div>
+		  <div class="tab-pane" id="modified">
+		  	<li>
+		  		<input type="checkbox" id="select-all-modified"> select all
+		  	</li>
+		  <% @changed_files.each do |file| %>
+		  	<li>
+		  		<input type="checkbox" class="modified_file" value="<%= file %>">
+		  		<%= file %>
+		  	</li>
+		  <% end %>
+		  </div>
+		</div>
+	</div>
+</div>

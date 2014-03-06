@@ -79,3 +79,16 @@ body {
 #markdown_file {
     width: 260px;
 }
+
+#untracked-files {
+    list-style: none;
+    width: 60%;
+}
+
+#commit-message {
+    width: 490px;
+}
+
+#file-tab {
+    margin-top: 20px;
+}

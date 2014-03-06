@@ -3,12 +3,16 @@ var publish_regex = /published:\s(true|false)/;
 var comments_regex = /comments: (true|false)/;
 var update_regex = /updated: [0-9\-]+/;
 
-var publish_matches = initial_text.match(publish_regex);
-var comments_matches = initial_text.match(comments_regex);
+if(initial_text){
+	var publish_matches = initial_text.match(publish_regex);
+	var comments_matches = initial_text.match(comments_regex);
+}
 
 var title_regex = /title:\s("?.+")/;
 var current_text = $('.markdown-container').val();
-var title = current_text.match(title_regex);
+if(current_text){
+	var title = current_text.match(title_regex);
+}
 var keyup_timeout;
 
 var reader = new FileReader();
@@ -63,16 +67,18 @@ function updateHTML(){
 
 function updateCheckbox(){
 	var current_text = $('.markdown-container').val();
-	var publish_matches = current_text.match(publish_regex);
-	var comments_matches = current_text.match(comments_regex);
+	if(current_text){	
+		var publish_matches = current_text.match(publish_regex);
+		var comments_matches = current_text.match(comments_regex);
 
-	var bool_r = [true, false];
-	if(publish_matches){
-		$('#publish').prop({'checked' : bool_r[publish_matches[1].length - 4]});
-	}
+		var bool_r = [true, false];
+		if(publish_matches){
+			$('#publish').prop({'checked' : bool_r[publish_matches[1].length - 4]});
+		}
 
-	if(comments_matches){
-		$('#comments').prop({'checked' : bool_r[comments_matches[1].length - 4]});
+		if(comments_matches){
+			$('#comments').prop({'checked' : bool_r[comments_matches[1].length - 4]});
+		}
 	}
 }
 
@@ -212,7 +218,9 @@ $(function(){
 		}, 1500);
 	});
 
-	$('#post-title').val(title[1]);
+	if(title){
+		$('#post-title').val(title[1]);
+	}
 
 	$('#upload').click(function(){
 		if(markdown_file.files.length === 0){
@@ -491,8 +499,9 @@ $(function(){
 		$('#main-settings-modal').modal('show');
 	});
 
-	$('#btn-push').click(function(){
-		$('#git-modal').modal('show');
+	$('#btn-git').click(function(){
+		$('#confirmation-modal').modal('show');
+		$('#btn-yes, #btn-no').data('action', $(this).data('action'));		
 	});
 
 	$('#btn-insertimage').click(function(){
@@ -527,6 +536,43 @@ $(function(){
 
 	$('#btn-help').click(function(){
 		$('#help-modal').modal('show');
+	});
+
+	$('#select-all-untracked').click(function(){
+		if($(this).is(':checked')){
+			$('.untracked_file').prop({'checked' : true});
+		}else{
+			$('.untracked_file').prop({'checked' : false});
+		}
+	});
+
+	$('#select-all-modified').click(function(){
+		if($(this).is(':checked')){
+			$('.modified_file').prop({'checked' : true});
+		}else{
+			$('.modified_file').prop({'checked' : false});
+		}
+	});
+
+	$('#btn-commit').click(function(){
+		var commit_message = $('#commit-message').val();
+		var files = [];
+		$('input[type=checkbox]:checked').each(function(){
+			var id = $(this).attr('id');
+			if(id != 'select-all-untracked' || id != 'select-all-modified'){
+				files.push($(this).val());
+			}
+		});
+
+		$.post('/commit', {'files' : files, 'commit_message' : commit_message}, function(r){
+			var response = JSON.parse(r);
+			notify(response.message, response.type);
+			if(response.type == 'success'){
+				$('#commit-message').val('');
+				$('#select-all-untracked, #select-all-modified').prop({'checked' : false});
+				$('input[type=checkbox]:checked').parents('li').remove();
+			}
+		});
 	});
 });
 

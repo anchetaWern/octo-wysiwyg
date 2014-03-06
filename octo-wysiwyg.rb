@@ -2,6 +2,8 @@ require 'sinatra'
 require 'redcarpet'
 require 'stringex'
 require 'data_uri'
+require 'git'
+require 'json'
 
 load 'config.rb'
 
@@ -12,6 +14,7 @@ def blockquote(html)
 	html.gsub! '{% endblockquote %}', '</blockquote>'
 	html
 end
+
 
 def render_markdown(text)
 	rnder = Redcarpet::Render::HTML.new(:prettify => true)
@@ -223,4 +226,39 @@ get '/list' do
 	
 	@posts
 	erb :list_posts
+end
+
+
+get '/git' do
+	@untracked_files = []
+	@changed_files = []
+	g = Git.open($octopress_dir, :log => Logger.new(STDOUT))
+	g.status.untracked.each do |file|
+		filename = file[0].to_s
+		if filename.include? "source" + $images_dir or filename.include? "source/_posts"
+			@untracked_files.push(filename)
+		end
+	end
+
+	g.status.changed.each do |file|
+		filename = file[0].to_s
+		@changed_files.push(filename)
+	end
+
+	@untracked_files
+	@changed_files
+	erb :git
+end
+
+post '/commit' do
+	response = {}
+	g = Git.open($octopress_dir, :log => Logger.new(STDOUT))
+	files = params[:files]
+	g.add(files)
+	if g.commit(params[:commit_message])
+		response = {:type => "success", :message => "files were successfully commited!"}
+	else
+		response = {:type => "error", :message => "there was an error commiting the files!"}
+	end
+	response.to_json
 end
