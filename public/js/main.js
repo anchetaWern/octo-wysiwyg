@@ -302,13 +302,6 @@ $(function(){
 			return false;
 		}
 
-		//insert image (g)
-		if(e.ctrlKey && e.which == 71){
-			e.preventDefault();
-			$('#image-upload-modal').modal('show');
-			return false;
-		}
-
 		//bold (b)
 		if(e.ctrlKey && e.which == 66){
 			e.preventDefault();
@@ -398,7 +391,7 @@ $(function(){
 		//git (8)
 		if(e.ctrlKey && e.which == 56){
 			e.preventDefault();
-			$('#git-modal').modal('show');
+			$('#btn-git').trigger('click');
 			return false;
 		}		
 
