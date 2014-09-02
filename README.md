@@ -11,6 +11,7 @@ This application depends on the following ruby gems:
 - redcarpet
 - data_uri
 - stringex
+- git (git should also be installed)
 
 It also uses the following for presentation and event-handling:
 
