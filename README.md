@@ -1,3 +1,6 @@
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=wernancheta&url=https://github.com/anchetaWern/octo-wysiwyg&title=octo-wysiwyg&language=ruby&tags=github&category=software)
+
+
 octo-wysiwyg
 ============
 
