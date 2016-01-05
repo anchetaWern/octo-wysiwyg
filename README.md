@@ -105,6 +105,11 @@ This app isn't meant to replace octopress, its just a UI that sits on top of oct
 ![octo-wysiwyg](/img/m2html.png)
 
 
+##Project Status
+
+Abandonware. I no longer have any plans on improving and maintaining this project.
+
+
 ##License
 
 The MIT License (MIT) Copyright (c)
